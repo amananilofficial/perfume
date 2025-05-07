@@ -32,7 +32,9 @@ if (initialPriceRange) {
 if (searchQuery) {
   const query = searchQuery.toLowerCase().trim();
   filteredProducts = filteredProducts.filter(p => 
-    p.name.toLowerCase() === query
+    p.name.toLowerCase().includes(query) ||
+    p.description.toLowerCase().includes(query) ||
+    p.category.toLowerCase().includes(query)
   );
 }
 ---
@@ -248,9 +250,10 @@ if (searchQuery) {
 
   // Function to update product display
   function updateProducts() {
-    // Get URL parameters for category filter
+    // Get URL parameters for category filter and search
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get('category');
+    const searchParam = urlParams.get('search');
     
     // Filter products
     let filtered = [...allProducts];
@@ -258,6 +261,16 @@ if (searchQuery) {
     // Apply category filter if present
     if (categoryParam) {
       filtered = filtered.filter(p => p.category === categoryParam);
+    }
+
+    // Apply search filter if present
+    if (searchParam) {
+      const query = searchParam.toLowerCase().trim();
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query) ||
+        p.category.toLowerCase().includes(query)
+      );
     }
 
     // Sort products

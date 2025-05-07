@@ -147,7 +147,12 @@ import { Image } from "astro:assets";
     const handleSearch = (query: string) => {
       if (query.trim()) {
         console.log("Navbar sending search:", query); // Debug log
-        window.location.href = `/products?search=${encodeURIComponent(query)}`;
+        // Ensure we're on the products page with the search parameter
+        const currentPath = window.location.pathname;
+        const searchUrl = currentPath === '/products' 
+          ? `/products?search=${encodeURIComponent(query)}`
+          : `/products?search=${encodeURIComponent(query)}`;
+        window.location.href = searchUrl;
       }
     };
 
